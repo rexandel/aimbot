@@ -6,6 +6,7 @@ import uuid
 from datetime import datetime
 from contextlib import contextmanager
 
+
 @contextmanager
 def dxcam_capture(target_fps=30, video_mode=False):
     camera = None
@@ -30,7 +31,8 @@ def dxcam_capture(target_fps=30, video_mode=False):
             except Exception as e:
                 print(f"Ошибка при остановке dxcam: {e}")
 
-def adaptive_record_game(output_folder="unknown", fps=30, interval_seconds=1.0):
+
+def record_game(output_folder="unknown", fps=30, interval_seconds=1.0):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
     
@@ -55,7 +57,9 @@ def adaptive_record_game(output_folder="unknown", fps=30, interval_seconds=1.0):
                             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
                             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-                            filename = os.path.join(output_folder, f"{output_folder}_{timestamp}.png")
+                            file_uuid = uuid.uuid4()
+                            
+                            filename = os.path.join(output_folder, f"{output_folder}_{timestamp}_{file_uuid}.png")
                             cv2.imwrite(filename, frame_rgb)
                             
                             frame_count += 1
@@ -91,4 +95,4 @@ def adaptive_record_game(output_folder="unknown", fps=30, interval_seconds=1.0):
 
 
 if __name__ == "__main__":
-    adaptive_record_game(output_folder="dust2", fps=60, interval_seconds=1.0)
+    record_game(output_folder="dust", fps=60, interval_seconds=1.0)
